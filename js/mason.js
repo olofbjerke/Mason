@@ -11,45 +11,46 @@ function get_rand_color()
 }
 
 function masonry (className) {
-	var images			= [];
 
-	var image			= [];
-	var row				= [];
-	var ri				= 0;
-	var current			= 0;
-	var imgCounter		= 0;
-	var rH				= 0;
-	var rW				= 0;
-	var step			= 1;
-	var diff			= 100;
+	var images			= [];	// Array with all images
+	var row				= [];	// Current row containing images
+	var rowIndex		= 0;	// Used when iterating through the images in a row
+	var current			= 0;	// Current image of all images
+	var imgCounter		= 0;	// Number of images in the masonry
+	var rowWidth		= 0;	// combined width of images in a row
+	var step			= 1;	// how many pixels the height is changed by
+	var diff			= 100;	// Images +- diff is added even if combined width is more than columnwidth 
+	var border			= 50;	// Border + margin around an image
+	var columnWidth		= $('.masonry').width() - 20; // Width of the column
+	var windowHeight	= $(window).height(); // Height of the viewport for standard size of the images
+
+	// This does not work in firefox by some reason
 	// var border			= 0 + (parseInt($('.masonry img:first').css('border-width'), 10) +
 	//	parseInt($('.masonry img:first').css('margin-left'), 10)) * 2;
-	border = 50;
-	var orientation		= '';
-	var columnWidth		= $('.masonry').width() - 20;
-	var windowHeight	= $(window).height();
+
+	// Set the same height for every image
+	$(".masonry img").height(windowHeight / 4);
 
 	// save all images in an array
-	// 
 	$('.masonry img').each(function() {
 		images[imgCounter++] = $(this);
-	}).height(windowHeight / 3);
+	});
 
 	// all images
 	while(current < imgCounter)
 	{
 		//Current row width
-		rW += images[current].width() + border;
-		row[ri++] = images[current];
+		rowWidth += images[current].width() + border;
+		row[rowIndex++] = images[current];
 
 		// More images to go
 		if((current + 1) != imgCounter)
 		{
 			// Can one more be added?
 			if(
-				(((rW + images[(current + 1)].width() + border) < (columnWidth + diff)) &&
-				((rW + images[(current + 1)].width() + border) > (columnWidth - diff))) ||
-					((rW + images[(current + 1)].width() + border) < (columnWidth))
+				(((rowWidth + images[(current + 1)].width() + border) < (columnWidth + diff)) &&
+				((rowWidth + images[(current + 1)].width() + border) > (columnWidth - diff))) ||
+					((rowWidth + images[(current + 1)].width() + border) < (columnWidth))
 				)
 			{
 				current++;
@@ -57,50 +58,47 @@ function masonry (className) {
 			}
 		}
 
-		// Row border color 
-		// color = get_rand_color();
-		// for(i = 0; i < row.length; i++)
-		// {
-		// 	row[i].css("border-color", color);
-		// }
-
 		// Row needs to be become smaller
-		if((rW > columnWidth))
+		if((rowWidth > columnWidth))
 		{
 			// Is it wide enough?
-			while(rW > columnWidth)
+			while(rowWidth > columnWidth)
 			{
-				rW = 0;
+				// Width of the row images together is reset after each iteration
+				rowWidth = 0;
+				// The new height
+				h = row[0].height() - step;
 				// Go through all images in the row
 				for(i = 0; i < row.length; i++)
 				{
-					h = row[i].height() - step;
 					row[i].height(h);
-					rW += row[i].width() + border;
+					rowWidth += row[i].width() + border;
 				}
 			}
 		}
 		// Row needs to be higher and wider
-		else if((rW < columnWidth))
+		else if((rowWidth < columnWidth))
 		{
 			// Is it wide enough?
-			while(rW < columnWidth)
+			while(rowWidth < columnWidth)
 			{
-				rW = 0;
+				// Width of the row images together is reset after each iteration
+				rowWidth = 0;
+				// The new height
+				h = row[0].height() + step;
 				// Go through all images in the row
 				for(i = 0; i < row.length; i++)
 				{
-					h = row[i].height() + step;
 					row[i].height(h);
-					rW += row[i].width() + border;
+					rowWidth += row[i].width() + border;
 				}
 			}
 		}
 
 		// Reset row
-		row		= [];
-		ri		= 0;
-		rW		= 0;
+		row			= [];
+		rowIndex	= 0;
+		rowWidth	= 0;
 		// Go to next image
 		current++;
 	}
