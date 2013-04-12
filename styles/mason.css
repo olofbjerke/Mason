@@ -2,11 +2,8 @@ body {
 	margin: 0;
 	padding: 0;
 	font-family: helvetica;
-	background: url('../../img/backgrounds/karbinerochsolskydd.jpg') center top no-repeat #f0f0f0;
+	background: #f0f0f0;
 	background-size: 150% auto;
-}
-
-header {
 }
 
 header hgroup {
@@ -61,8 +58,8 @@ article {
 		height: 100%;
 		margin: 0 auto;
 		border: 1em solid #fff;
-		box-sizing: border-box;
 		box-shadow: 0 5px 15px #333;
+		box-sizing: border-box;
 	}
 
 	.alttext {
@@ -85,10 +82,6 @@ article {
 
 	body {
 		background-size: 100% auto;
-	}
-
-	header {
-		
 	}
 	
 	article img {
