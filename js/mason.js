@@ -1,7 +1,3 @@
-jQuery(document).ready(function() {
-	$('.popup').hide();
-});
-
 function get_rand_color()
 {
 	var color = Math.floor(Math.random() * Math.pow(256, 3)).toString(16);
@@ -19,18 +15,18 @@ function masonry (className) {
 	var step			= 1;	// how many pixels the height is changed by
 	var diff			= 300;	// Images +- diff is added even if combined width is more than columnWidth 
 	var border			= 50;	// Border + margin around an image
-	var columnWidth		= $('.masonry').width() - 20; // Width of the column
+	var columnWidth		= $(className).width() - 12; // Width of the column
 	var windowHeight	= $(window).height(); // Height of the viewport for standard size of the images
 
 	// This does not work in firefox by some reason
-	// var border			= 0 + (parseInt($('.masonry img:first').css('border-width'), 10) +
-	//	parseInt($('.masonry img:first').css('margin-left'), 10)) * 2;
+	// var border			= 0 + (parseInt($(classNameimg:first').css('border-width'), 10) +
+	//	parseInt($(classNameimg:first').css('margin-left'), 10)) * 2;
 
 	// Set the same height for every image
-	$(".masonry img").height(windowHeight / 4);
+	$(className + " img").height(windowHeight / 3);
 
 	// save all images in an array
-	$('.masonry img').each(function() {
+	$(className + " img").each(function() {
 		images.push($(this));
 	});
 
@@ -106,6 +102,9 @@ function fixate (row, targetWidth, step) {
 	}
 }
 
+jQuery(document).ready(function() {
+	$('.popup').hide();
+});
 
 jQuery(window).load(function() {
 
@@ -119,7 +118,6 @@ jQuery(window).load(function() {
 	$('.masonry img').click(function()
 	{
 		var alt = '';
-		// alert($(this).attr('alt'));
 		if($(this).attr('alt') !== "")
 			alt = '<div class="alttext">'+ $(this).attr('alt') +'</div>';
 		$('.popup').css('height', ($(window).height() - 60));
@@ -128,7 +126,6 @@ jQuery(window).load(function() {
 		$(this).addClass('active');
 
 		$('.popup img').load(function() {
-
 
 			if($('.popup img').width() > $(window).width())
 			{
