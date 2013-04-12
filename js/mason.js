@@ -14,12 +14,10 @@ function masonry (className) {
 
 	var images			= [];	// Array with all images
 	var row				= [];	// Current row containing images
-	var rowIndex		= 0;	// Used when iterating through the images in a row
 	var current			= 0;	// Current image of all images
-	var imgCounter		= 0;	// Number of images in the masonry
 	var rowWidth		= 0;	// combined width of images in a row
 	var step			= 1;	// how many pixels the height is changed by
-	var diff			= 100;	// Images +- diff is added even if combined width is more than columnwidth 
+	var diff			= 100;	// Images +- diff is added even if combined width is more than columnWidth 
 	var border			= 50;	// Border + margin around an image
 	var columnWidth		= $('.masonry').width() - 20; // Width of the column
 	var windowHeight	= $(window).height(); // Height of the viewport for standard size of the images
@@ -33,18 +31,18 @@ function masonry (className) {
 
 	// save all images in an array
 	$('.masonry img').each(function() {
-		images[imgCounter++] = $(this);
+		images.push($(this));
 	});
 
-	// all images
-	while(current < imgCounter)
+	// Go through all images and create rows
+	while(current < images.length)
 	{
 		//Current row width
 		rowWidth += images[current].width() + border;
-		row[rowIndex++] = images[current];
+		row.push(images[current]);
 
 		// More images to go
-		if((current + 1) != imgCounter)
+		if((current + 1) != images.length)
 		{
 			// Can one more be added?
 			if(
@@ -58,51 +56,64 @@ function masonry (className) {
 			}
 		}
 
-		// Row needs to be become smaller
-		if((rowWidth > columnWidth))
-		{
-			// Is it wide enough?
-			while(rowWidth > columnWidth)
-			{
-				// Width of the row images together is reset after each iteration
-				rowWidth = 0;
-				// The new height
-				h = row[0].height() - step;
-				// Go through all images in the row
-				for(i = 0; i < row.length; i++)
-				{
-					row[i].height(h);
-					rowWidth += row[i].width() + border;
-				}
-			}
-		}
-		// Row needs to be higher and wider
-		else if((rowWidth < columnWidth))
-		{
-			// Is it wide enough?
-			while(rowWidth < columnWidth)
-			{
-				// Width of the row images together is reset after each iteration
-				rowWidth = 0;
-				// The new height
-				h = row[0].height() + step;
-				// Go through all images in the row
-				for(i = 0; i < row.length; i++)
-				{
-					row[i].height(h);
-					rowWidth += row[i].width() + border;
-				}
-			}
-		}
+		fixate(row, columnWidth, step);
 
 		// Reset row
 		row			= [];
-		rowIndex	= 0;
 		rowWidth	= 0;
 		// Go to next image
 		current++;
 	}
 }
+
+function fixate (row, targetWidth, step) {
+	// This border does not work in firefox
+	var border		= 0 + (parseInt(row[0].css('border-width'), 10) +
+		parseInt(row[0].css('margin-left'), 10)) * 2;
+	var rowWidth	= 0;
+
+	// Set up the current row width
+	for(var i = 0; i < row.length; i++)
+		rowWidth += row[i].width() + border;
+
+	// Row needs to be become smaller
+	if((rowWidth > targetWidth))
+	{
+		// Is it wide enough?
+		while(rowWidth > targetWidth)
+		{
+			// Width of the row images together is reset after each iteration
+			rowWidth = 0;
+			// The new height
+			h = row[0].height() - step;
+			// Go through all images in the row
+			for(i = 0; i < row.length; i++)
+			{
+				row[i].height(h);
+				rowWidth += row[i].width() + border;
+			}
+		}
+	}
+	// Row needs to be higher and wider
+	else if((rowWidth < targetWidth))
+	{
+		// Is it wide enough?
+		while(rowWidth < targetWidth)
+		{
+			// Width of the row images together is reset after each iteration
+			rowWidth = 0;
+			// The new height
+			h = row[0].height() + step;
+			// Go through all images in the row
+			for(i = 0; i < row.length; i++)
+			{
+				row[i].height(h);
+				rowWidth += row[i].width() + border;
+			}
+		}
+	}
+}
+
 
 jQuery(window).load(function() {
 
