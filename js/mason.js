@@ -17,7 +17,7 @@ function masonry (className) {
 	var current			= 0;	// Current image of all images
 	var rowWidth		= 0;	// combined width of images in a row
 	var step			= 1;	// how many pixels the height is changed by
-	var diff			= 100;	// Images +- diff is added even if combined width is more than columnWidth 
+	var diff			= 300;	// Images +- diff is added even if combined width is more than columnWidth 
 	var border			= 50;	// Border + margin around an image
 	var columnWidth		= $('.masonry').width() - 20; // Width of the column
 	var windowHeight	= $(window).height(); // Height of the viewport for standard size of the images
@@ -41,19 +41,11 @@ function masonry (className) {
 		rowWidth += images[current].width() + border;
 		row.push(images[current]);
 
-		// More images to go
-		if((current + 1) != images.length)
+		// More images in array and one more can be added to the current row?
+		if(((current + 1) != images.length) && (rowWidth + images[(current + 1)].width() + border) < (columnWidth + diff))
 		{
-			// Can one more be added?
-			if(
-				(((rowWidth + images[(current + 1)].width() + border) < (columnWidth + diff)) &&
-				((rowWidth + images[(current + 1)].width() + border) > (columnWidth - diff))) ||
-					((rowWidth + images[(current + 1)].width() + border) < (columnWidth))
-				)
-			{
-				current++;
-				continue;
-			}
+			current++;
+			continue;
 		}
 
 		fixate(row, columnWidth, step);
