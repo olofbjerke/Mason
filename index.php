@@ -38,7 +38,8 @@
 
 	<footer>
 		<script type="text/javascript" src="js/jquery-1.9.0.min.js"></script>
-		<script type="text/javascript" src="js/mason.js"></script>
+		<script type="text/javascript" src="js/jquery.mason.js"></script>
+		<script type="text/javascript" src="js/main.js"></script>
 	</footer>
 </body>
 <html>

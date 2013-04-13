@@ -42,7 +42,7 @@ header section {
 	padding: 1em;
 	margin-bottom: 1em;
 	font-size: 1em;
-	border: 1em solid #fff;
+	border: 0.5em solid #fff;
 	border-top-width: 0;
 	box-shadow: 0 3px 5px #ccc;
 }
@@ -97,13 +97,16 @@ article {
 		font-size: 1em;
 	}
 
-
 @media screen and (min-width: 45em) {
 
 	body {
 		background-size: 100% auto;
 	}
 	
+	header section {
+		border-width: 0 1em 1em 1em;
+	}
+
 	article img {
 		border-width: 1em;
 	}

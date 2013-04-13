@@ -1,6 +1,12 @@
 /*
-	Mason JS
- */
+   --------------------------------
+   Mason JS
+   --------------------------------
+   + https://github.com/olofbjerke/Mason
+   + version 0.5
+   + Copyright 2013 Olof Bjerke
+   + Licensed under the MIT license
+*/
 (function( $ ){
 
 	$.fn.mason = function() {
@@ -19,7 +25,6 @@
 		// var border			= 0 + (parseInt($(classNameimg:first').css('border-width'), 10) +
 		//	parseInt($(classNameimg:first').css('margin-left'), 10)) * 2;
 
-
 		// Fix the height and width of the row
 		function fixate (row, targetWidth, step) {
 
@@ -32,7 +37,7 @@
 			// Fix width if row has only one image
 			if(row.length === 1)
 			{
-				row[0].width(targetWidth - border);
+				row[0].width("auto");
 				row[0].height("auto");
 				return;
 			}
@@ -116,51 +121,3 @@
 		}
 	};
 })( jQuery );
-
-jQuery(document).ready(function() {
-	$('.popup').hide();
-});
-
-jQuery(window).load(function() {
-
-	$(".masonry").mason();
-
-	$('.masonry a').click(function(event)
-	{
-		return false;
-	});
-
-	$('.masonry img').click(function()
-	{
-		var alt = '';
-		if($(this).attr('alt') !== "")
-			alt = '<div class="alttext">'+ $(this).attr('alt') +'</div>';
-		$('.popup').css('height', ($(window).height() - 60));
-		$('.popup').html(alt + '<img src="' + $(this).parent().attr('href') +'">');
-		$('.popup').fadeIn('1500');
-		$(this).addClass('active');
-
-		$('.popup img').load(function() {
-
-			if($('.popup img').width() > $(window).width())
-			{
-				$('.popup img').width( ($(window).width() - 60));
-				$('.popup img').css('height', 'auto');
-			}
-
-			var b = 0 + (parseInt($('.popup img').css('border-width'), 10) * 2);
-
-			$('.popup .alttext').width($('.popup img:first').width() - b);
-			$('.popup .alttext').css('margin-left', -($('.popup img').width() / 2) );
-
-		});
-
-	});
-
-	$('.popup').bind('click', function(event)
-	{
-		$(this).fadeOut(500);
-		$('.active').removeClass('active');
-	});
-
-});
