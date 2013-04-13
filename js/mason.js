@@ -29,6 +29,14 @@
 			var border		= 0 + (parseInt(row[0].css('border-width'), 10) +
 				parseInt(row[0].css('margin-left'), 10)) * 2;
 
+			// Fix width if row has only one image
+			if(row.length === 1)
+			{
+				row[0].width(targetWidth - border);
+				row[0].height("auto");
+				return;
+			}
+
 			// Set up the current row width
 			for(var i = 0; i < row.length; i++)
 			{
