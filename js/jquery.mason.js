@@ -20,6 +20,7 @@
 		var row				= []; // Current row containing images
 		var rowWidth		= 0;
 		var columnWidth	    = $this.width();
+		var windowWidth     = window.innerWidth;
 		var windowHeight	= window.innerHeight;
 
 		var $this = $(this);
@@ -36,8 +37,7 @@
 
 		var resize_row = function() {
 			// don't resize if only one image on the row
-			if (row.length == 1)
-			{
+			if (row.length == 1) {
 				return;
 			}
 
@@ -50,8 +50,7 @@
 			}
 
 			// iterate over the row images and resize them
-			for(i = 0; i < row.length; i++)
-			{
+			for(i = 0; i < row.length; i++) {
 				ratio = row[i].width() / rowWidth * row.length;
 				w = row[i].width() + step;
 				h = row[i].height() + step;
@@ -68,8 +67,7 @@
 			var currentImg    = 0;
 			var rowCounter    = 0;
 
-			while(currentImg < totalImages)
-			{
+			while(currentImg < totalImages) {
 				position = images[currentImg].data('top');
 
 				if (prevPosition != position)
@@ -91,6 +89,8 @@
 				currentImg++;
 			}
 
+			resize_row();
+
 			row		   	= [];
 			rowCounter	= 0;
 			rowWidth	= 0;
@@ -100,6 +100,23 @@
 		return this.each(function(){
 			collect();
 			masonry();
+
+			var resizeTimer;
+			$(window).resize(function(){
+				// don't trigger resize event unless the resize has stopped 
+				// for at least half a second and the window width is different
+				clearTimeout(resizeTimer);
+				resizeTimer = setTimeout(function() {
+					if (windowWidth == window.innerWidth)
+					{
+						return;
+					}
+
+					columnWidth	= $this.width();
+					windowWidth = window.innerWidth;
+					masonry();
+				}, 500);
+			});
 		});
 	};
 })(jQuery);
