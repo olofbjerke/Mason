@@ -3,121 +3,103 @@
    Mason JS
    --------------------------------
    + https://github.com/olofbjerke/Mason
-   + version 0.5
+   + version 0.6
    + Copyright 2013 Olof Bjerke
    + Licensed under the MIT license
 */
-(function( $ ){
+(function($) {
+	$.fn.mason = function(opts) {
+	    var options = $.extend({},
+	        {
+	        },
+	        opts || {}
+	    );
 
-	$.fn.mason = function() {
+	    var $this           = $(this); // To be able to address the masonry
+	    var images			= []; // Array with all images
+		var row				= []; // Current row containing images
+		var rowWidth		= 0;
+		var columnWidth	    = $this.width();
+		var windowHeight	= window.innerHeight;
 
-		var images			= [];	// Array with all images
-		var row				= [];	// Current row containing images
-		var current			= 0;	// Current image of all images
-		var rowWidth		= 0;	// combined width of images in a row
-		var step			= 1;	// how many pixels the height is changed by
-		var diff			= 300;	// Images +- diff is added even if combined width is more than columnWidth
-		var border			= 50;	// Border + margin around an image
-		var columnWidth		= this.width() - 12; // Width of the column
-		var windowHeight	= $(window).height(); // Height of the viewport for standard size of the images
+		var $this = $(this);
 
-		// This does not work in firefox by some reason
-		// var border			= 0 + (parseInt($(classNameimg:first').css('border-width'), 10) +
-		//	parseInt($(classNameimg:first').css('margin-left'), 10)) * 2;
+		var collect = function() {
+			$this.find('img').each(function(){
+				images.push($(this));
 
-		// Fix the height and width of the row
-		function fixate (row, targetWidth, step) {
+				$(this).height(windowHeight / 3.5)
+					.css({display: 'block', float: 'left'})
+					.data('top', $(this).position().top);
+			});
+		};
 
-			var height		= 0;
-			var rowWidth	= 0;
-			// This border does not work in firefox
-			var border		= 0 + (parseInt(row[0].css('border-width'), 10) +
-				parseInt(row[0].css('margin-left'), 10)) * 2;
-
-			// Fix width if row has only one image
-			if(row.length === 1)
+		var resize_row = function() {
+			// don't resize if only one image on the row
+			if (row.length == 1)
 			{
-				row[0].width("auto");
-				row[0].height("auto");
 				return;
 			}
 
-			// Set up the current row width
-			for(var i = 0; i < row.length; i++)
-			{
-				rowWidth += row[i].width() + border;
+			// calculate the needed resize step to fit the row width
+			var remaining_width = columnWidth - rowWidth;
+			// use 1px less than the column width cause sometimes the column overflows otherwise
+			var step = (remaining_width - 1) / row.length;
+			if (step == 0) {
+				return;
 			}
 
-			// Row needs to be become smaller
-			if((rowWidth > targetWidth))
+			// iterate over the row images and resize them
+			for(i = 0; i < row.length; i++)
 			{
-				// Is it wide enough?
-				while(rowWidth > targetWidth)
+				ratio = row[i].width() / rowWidth * row.length;
+				w = row[i].width() + step;
+				h = row[i].height() + step;
+				
+				row[i].width(w);
+				row[i].height(h);
+			}
+		};
+
+		var masonry = function() {
+			var prevPosition  = images[0].data('top');
+			var position      = prevPosition;
+			var totalImages   = images.length;
+			var currentImg    = 0;
+			var rowCounter    = 0;
+
+			while(currentImg < totalImages)
+			{
+				position = images[currentImg].data('top');
+
+				if (prevPosition != position)
 				{
-					// Width of the row images together is reset after each iteration
-					rowWidth = 0;
-					// The new height
-					height = row[0].height() - step;
-					// Go through all images in the row
-					for(i = 0; i < row.length; i++)
-					{
-						row[i].height(height);
-						rowWidth += row[i].width() + border;
-					}
+					resize_row();
+
+					// Reset row
+					row 		= [];
+					rowCounter	= 0;
+					rowWidth   = 0;
 				}
-			}
-			// Row needs to be higher and wider
-			else if((rowWidth < targetWidth))
-			{
-				// Is it wide enough?
-				while(rowWidth < targetWidth)
-				{
-					// Width of the row images together is reset after each iteration
-					rowWidth = 0;
-					// The new height
-					height = row[0].height() + step;
-					// Go through all images in the row
-					for(i = 0; i < row.length; i++)
-					{
-						row[i].height(height);
-						rowWidth += row[i].width() + border;
-					}
-				}
-			}
-		}
 
-		// Set the same height for every image
-		this.find("img").height(windowHeight / 3.2);
-
-		// save all images in an array
-		this.find("img").each(function() {
-			images.push($(this));
-		});
-
-
-		// Go through all images and create rows
-		while(current < images.length)
-		{
-			//Current row width
-			rowWidth += images[current].width() + border;
-			row.push(images[current]);
-
-			// More images in array and one more can be added to the current row?
-			if(((current + 1) !== images.length) &&
-				(rowWidth + images[(current + 1)].width() + border) < (columnWidth + diff))
-			{
-				current++;
-				continue;
+				//Current row width
+				rowWidth         += images[currentImg].outerWidth(true);
+				row[rowCounter++] = images[currentImg];
+				prevPosition      = position;
+				
+				// Go to next image
+				currentImg++;
 			}
 
-			// Fix the width and height of the row
-			fixate(row, columnWidth, step);
-
-			// Reset row
-			row			= [];
+			row		   	= [];
+			rowCounter	= 0;
 			rowWidth	= 0;
-			// Go to next image
-			current++;
-		}
+			currentImg	= 0;
+		};
+		
+		return this.each(function(){
+			collect();
+			masonry();
+		});
 	};
-})( jQuery );
+})(jQuery);
