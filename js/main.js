@@ -4,7 +4,14 @@ jQuery(document).ready(function() {
 
 jQuery(window).load(function() {
 	console.time('mason');
-	$(".masonry").mason();
+	$(".masonry").mason({
+		onResizeStart: function() {
+			$('.masonry img').stop().animate({opacity: 0}, 500);
+		},
+		onResizeEndAfterMasonry: function() {
+			$('.masonry img').stop().animate({opacity: 1}, 500);	
+		}
+	});
 	console.timeEnd('mason');
 
 	$('.masonry a').click(function(event)

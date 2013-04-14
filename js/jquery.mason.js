@@ -11,6 +11,10 @@
 	$.fn.mason = function(opts) {
 	    var options = $.extend({},
 	        {
+	        	onResizeStart:            function() {},
+	        	onResizeEnd:              function() {},
+	        	onResizeEndBeforeMasonry: function() {},
+	        	onResizeEndAfterMasonry:  function() {}
 	        },
 	        opts || {}
 	    );
@@ -103,10 +107,14 @@
 
 			var resizeTimer;
 			$(window).resize(function(){
+				options.onResizeStart.call($this);
+
 				// don't trigger resize event unless the resize has stopped 
 				// for at least half a second and the window width is different
 				clearTimeout(resizeTimer);
 				resizeTimer = setTimeout(function() {
+					options.onResizeEnd.call($this);
+
 					if (windowWidth == window.innerWidth)
 					{
 						return;
@@ -114,7 +122,10 @@
 
 					columnWidth	= $this.width();
 					windowWidth = window.innerWidth;
+
+					options.onResizeEndBeforeMasonry.call($this);
 					masonry();
+					options.onResizeEndAfterMasonry.call($this);
 				}, 500);
 			});
 		});
