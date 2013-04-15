@@ -4,7 +4,9 @@ jQuery(document).ready(function() {
 
 jQuery(window).load(function() {
 
+	console.time('mason');
 	$(".masonry").mason();
+	console.timeEnd('mason');
 
 	$('.masonry a').click(function(event)
 	{
