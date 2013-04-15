@@ -17,72 +17,37 @@
 		var rowWidth		= 0;	// combined width of images in a row
 		var step			= 1;	// how many pixels the height is changed by
 		var diff			= 300;	// Images +- diff is added even if combined width is more than columnWidth
-		var border			= 50;	// Border + margin around an image
-		var columnWidth		= this.width() - 12; // Width of the column
+		var border			= 0;	// Border + margin around an image
+		var columnWidth		= this.width(); // Width of the column
 		var windowHeight	= $(window).height(); // Height of the viewport for standard size of the images
-
-		// This does not work in firefox by some reason
-		// var border			= 0 + (parseInt($(classNameimg:first').css('border-width'), 10) +
-		//	parseInt($(classNameimg:first').css('margin-left'), 10)) * 2;
 
 		// Fix the height and width of the row
 		function fixate (row, targetWidth, step) {
 
-			var height		= 0;
-			var rowWidth	= 0;
-			// This border does not work in firefox
-			var border		= 0 + (parseInt(row[0].css('border-width'), 10) +
-				parseInt(row[0].css('margin-left'), 10)) * 2;
+			var height			= 0;
+			var rowWidth		= 0;
+			var rowRatio		= 0;
+			var distanceLeft	= 0;
+			var border			= 0 + row[0].outerWidth(true) - row[0].width();
 
 			// Fix width if row has only one image
 			if(row.length === 1)
 			{
-				row[0].width("auto");
-				row[0].height("auto");
 				return;
 			}
 
-			// Set up the current row width
+			// Set up the current row ratio
 			for(var i = 0; i < row.length; i++)
 			{
-				rowWidth += row[i].width() + border;
+				rowRatio += row[i].width() / row[i].height();
 			}
 
-			// Row needs to be become smaller
-			if((rowWidth > targetWidth))
+			// The new height for all images in the row
+			height = (targetWidth - 1 - border * row.length) / rowRatio;
+
+			for(i = 0; i < row.length; i++)
 			{
-				// Is it wide enough?
-				while(rowWidth > targetWidth)
-				{
-					// Width of the row images together is reset after each iteration
-					rowWidth = 0;
-					// The new height
-					height = row[0].height() - step;
-					// Go through all images in the row
-					for(i = 0; i < row.length; i++)
-					{
-						row[i].height(height);
-						rowWidth += row[i].width() + border;
-					}
-				}
-			}
-			// Row needs to be higher and wider
-			else if((rowWidth < targetWidth))
-			{
-				// Is it wide enough?
-				while(rowWidth < targetWidth)
-				{
-					// Width of the row images together is reset after each iteration
-					rowWidth = 0;
-					// The new height
-					height = row[0].height() + step;
-					// Go through all images in the row
-					for(i = 0; i < row.length; i++)
-					{
-						row[i].height(height);
-						rowWidth += row[i].width() + border;
-					}
-				}
+				row[i].height(height);
 			}
 		}
 
@@ -94,7 +59,7 @@
 			images.push($(this));
 		});
 
-
+		border			= 0 + images[0].outerWidth(true) - images[0].width();
 		// Go through all images and create rows
 		while(current < images.length)
 		{
