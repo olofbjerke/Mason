@@ -55,7 +55,6 @@
 
 			// iterate over the row images and resize them
 			for(i = 0; i < row.length; i++) {
-				ratio = row[i].width() / rowWidth * row.length;
 				w = row[i].width() + step;
 				h = row[i].height() + step;
 				
