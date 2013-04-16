@@ -26,8 +26,10 @@
 
 			var height			= 0;
 			var rowWidth		= 0;
+			var rowWidth2		= 0;
 			var rowRatio		= 0;
 			var distanceLeft	= 0;
+			targetWidth			-= 1; // Fix for sub pixel rendering issues
 			var border			= 0 + row[0].outerWidth(true) - row[0].width();
 
 			// Fix width if row has only one image
@@ -43,12 +45,23 @@
 			}
 
 			// The new height for all images in the row
-			height = (targetWidth - 1 - border * row.length) / rowRatio;
+			height = Math.floor((targetWidth - border * row.length) / rowRatio);
 
 			for(i = 0; i < row.length; i++)
 			{
 				row[i].height(height);
+				w = row[i].width();
+				row[i].width(w);
+				rowWidth += row[i].width() + border;
 			}
+
+			// Fix last image to get better row endings.
+			if(rowWidth != targetWidth)
+			{
+				width = row[(row.length - 1)].width() + ((targetWidth - rowWidth));
+				row[(row.length - 1)].width(width);
+			}
+
 		}
 
 		// Set the same height for every image

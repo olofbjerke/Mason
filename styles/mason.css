@@ -1,3 +1,10 @@
+* {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-opera-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
 body {
 	margin: 0;
 	padding: 0;
@@ -19,43 +26,45 @@ h2 {
 	font-size: 1em;
 }
 
-article img {
-	position: relative;
-	display: block;
-	float: left;
-	margin: 0.5em;
-	padding: 0;
-	border: 0.5em solid #fff;
-	box-shadow: 0 3px 5px #ccc;
-	box-sizing: border-box;
-}
-
-section {
-	width: 94%;
-	margin: 0 auto;
-	font-size: 1em;
-	box-sizing: border-box;
-}
-
-header section {
+header {
 	background: #333;
 	padding: 1em;
 	margin-bottom: 1em;
 	font-size: 1em;
 	border: 0.5em solid #fff;
-	border-top-width: 0;
+	border-width: 0 0 0.5em 0;
 	box-shadow: 0 3px 5px #ccc;
 }
 
+section {
+	width: 90%;
+	max-width: 1300px;
+	margin: 0 auto;
+	font-size: 1em;
+}
+
+
 article {
-	width: 100%;
 	position: relative;
 	text-align: center;
+	background: #ff0000;
 }
+
+
+	article img {
+		position: relative;
+		display: block;
+		float: left;
+		/*margin: 0.5em;*/
+		padding: 0;
+		border: 0.5em solid #fff;
+		/*box-shadow: 0 3px 5px #ccc;*/
+		/*border-radius: 0.5em;*/
+	}
+
 
 .masonry {
 	text-align: center;
-	box-sizing: border-box;
 }
 
 .masonry img {
@@ -69,7 +78,6 @@ article {
 	left: 0;
 	z-index: 100;
 	text-align: center;
-	box-sizing: border-box;
 }
 
 	.popup img {
@@ -79,7 +87,6 @@ article {
 		margin: 0 auto;
 		border: 1em solid #fff;
 		box-shadow: 0 5px 15px #333;
-		box-sizing: border-box;
 	}
 
 	.alttext {
@@ -104,11 +111,11 @@ article {
 	}
 	
 	header section {
-		border-width: 0 1em 1em 1em;
+		border-width: 0 0.5em 0.5em 0.5em;
 	}
 
 	article img {
-		border-width: 1em;
+		border-width: 0.2em;
 	}
 
 }
