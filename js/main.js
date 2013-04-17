@@ -9,7 +9,7 @@ jQuery(window).load(function() {
 			$('.masonry img').stop().animate({opacity: 0}, 500);
 		},
 		onResizeEndAfterMasonry: function() {
-			$('.masonry img').stop().animate({opacity: 1}, 500);	
+			$('.masonry img').stop().animate({opacity: 1}, 500);
 		}
 	});
 	console.timeEnd('mason');
