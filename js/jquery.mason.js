@@ -26,21 +26,22 @@
 		var columnWidth			= $this.width() - 1;	// 1 is subtracted for subpixel problems
 		var windowWidth			= window.innerWidth;	// Look for resizes
 		var imageDenominator	= 3.5;					// Divided of
+		var border				= 0;					// Border, padding and margin. Calculated in collect
 		var resizeSingles		= true;					// Set to false if single image rows should not scale
 
 		var collect = function() {
 			$this.find('img').each(function(){
 				images.push($(this));
-
-				$(this).height(window.innerHeight / imageDenominator)
+				height = Math.floor(window.innerHeight / imageDenominator);
+				$(this).height(height)
 					.css({display: 'block', float: 'left'})
 					.data('top', $(this).position().top);
 			});
+			border = images[0].outerWidth(true) - images[0].width();
 		};
 
 		var resize_row = function() {
 			var rowRatio	= 0;
-			var border		= row[0].outerWidth(true) - row[0].width();
 			rowWidth = 0;
 
 			// don't resize if only one image on the row
