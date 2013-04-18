@@ -1,7 +1,7 @@
 * {
 	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
 	-opera-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
@@ -26,42 +26,37 @@ h2 {
 	font-size: 1em;
 }
 
-header {
+section {
+	width: 94%;
+	margin: 0 auto;
+	font-size: 1em;
+}
+
+header section {
 	background: #333;
 	padding: 1em;
 	margin-bottom: 1em;
 	font-size: 1em;
 	border: 0.5em solid #fff;
-	border-width: 0 0 0.5em 0;
+	border-top-width: 0;
 	box-shadow: 0 3px 5px #ccc;
 }
 
-section {
-	width: 90%;
-	max-width: 1300px;
-	margin: 0 auto;
-	font-size: 1em;
-}
-
-
 article {
+	width: 100%;
 	position: relative;
 	text-align: center;
-	background: #ff0000;
 }
 
-
-	article img {
-		position: relative;
-		display: block;
-		float: left;
-		/*margin: 0.5em;*/
-		padding: 0;
-		border: 0.5em solid #fff;
-		/*box-shadow: 0 3px 5px #ccc;*/
-		/*border-radius: 0.5em;*/
-	}
-
+article img {
+	position: relative;
+	display: block;
+	float: left;
+	margin: 0.2em;
+	padding: 0;
+	border: 0.2em solid #fff;
+	/*box-shadow: 0 3px 5px #ccc;*/
+}
 
 .masonry {
 	text-align: center;
@@ -111,7 +106,7 @@ article {
 	}
 	
 	header section {
-		border-width: 0 0.5em 0.5em 0.5em;
+		border-width: 0 1em 1em 1em;
 	}
 
 	article img {
