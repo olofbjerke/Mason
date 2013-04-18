@@ -1,9 +1,9 @@
 /*
    --------------------------------
-   Mason JS
+   Mason
    --------------------------------
    + https://github.com/olofbjerke/Mason
-   + version 0.8
+   + version 1.0.0
    + Copyright 2013 Olof Bjerke & Rostislav Raykov
    + Licensed under the MIT license
 */

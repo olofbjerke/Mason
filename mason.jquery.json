@@ -1,0 +1,32 @@
+{
+    "name": "mason",
+    "title": "Mason",
+    "description": "Display multiple images with various proportions in rows of equal height and width.",
+    "keywords": [
+        "images",
+        "scaling",
+        "equal"
+    ],
+    "version": "1.0.0",
+    "author": {
+        "name": "Olof Bjerke and Rostislav Raykov",
+        "url": "https://github.com/olofbjerke/Mason"
+    },
+    "maintainers": [
+        {
+            "name": "Olof Bjerke",
+            "email": "olofbjerke@gmail.com",
+            "url": "http://objerke.se"
+        }
+    ],
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/olofbjerke/Mason/blob/master/MIT-LICENSE.txt"
+        }
+    ],
+    "homepage": "http://mason.objerke.se",
+    "dependencies": {
+        "jquery": ">=1.9"
+    }
+}
